@@ -24,7 +24,7 @@ db.once('open', () => {
 
 app.use('/', require('./routes/home'))
 app.use('/record', require('./routes/records'))
-
+app.use('/users', require('./routes/user'))
 
 handlebars.registerHelper('if_equal', function (category, input, options) {
   if (category === input) {
