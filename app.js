@@ -5,6 +5,7 @@ const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const handlebars = require("handlebars")
 const methodOverride = require('method-override')
+const session = require('express-session')
 
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
@@ -26,6 +27,11 @@ db.once('open', () => {
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'))
 app.use(methodOverride('_method'))
+app.use(session({
+  secret: 'save money',
+  resave: false,
+  saveUninitialized: true,
+}))
 app.use('/', require('./routes/home'))
 app.use('/record', require('./routes/records'))
 app.use('/users', require('./routes/user'))
