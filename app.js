@@ -15,7 +15,7 @@ db.once('open', () => {
 })
 
 app.use('/', require('./routes/home'))
-app.use('/account', require('./routes/accounts'))
+app.use('/record', require('./routes/records'))
 
 
 app.listen(3000, () => {
