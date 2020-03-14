@@ -9,7 +9,7 @@ const { authenticated } = require('../config/auth')
 
 // home page
 router.get('/', authenticated, (req, res) => {
-  Record.find()
+  Record.find({ userId: req.user._id })
     .lean()
     .exec((err, records) => {
       if (err) return console.error(err)
