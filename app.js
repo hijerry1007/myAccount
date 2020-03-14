@@ -6,7 +6,7 @@ const exphbs = require('express-handlebars')
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
-mongoose.connect('mongodb://localhost/account', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost/record', { useNewUrlParser: true, useUnifiedTopology: true })
 
 const db = mongoose.connection
 
