@@ -4,7 +4,12 @@ const Record = require('../models/record')
 // model
 
 router.get('/', (req, res) => {
-  res.render('index')
+  Record.find()
+    .lean()
+    .exec((err, records) => {
+      if (err) return console.error(err)
+      return res.render('index', { records: records })
+    })
 })
 
 module.exports = router

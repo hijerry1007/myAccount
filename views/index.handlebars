@@ -35,18 +35,17 @@
           </tr>
         </thead>
         <tbody>
+          {{#each records}}
           <tr class="table-danger">
-            <th scope="row">Active</th>
-            <td>Column content</td>
-            <td>Column content</td>
-            <td><a href="" class="btn btn-outline-info edit">修改</a></td>
+            <th scope="row">{{this.category}}</th>
+            <td>{{this.name}}</td>
+            <td>{{this.amount}}</td>
+            <td><a href="#" class="btn btn-outline-info edit">修改</a></td>
             <td>
-              <form action="#" method="post" style="display:inline">
-
-                <button type="submit" class="btn btn-outline-danger btn-front">刪除</button>
-              </form>
+              <button type="submit" class="btn btn-outline-danger btn-front">刪除</button>
             </td>
           </tr>
+          {{/each}}
         </tbody>
       </table>
     </div>
