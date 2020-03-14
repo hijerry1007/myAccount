@@ -6,11 +6,11 @@
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
             aria-expanded="false">類別</a>
           <div class="dropdown-menu" style="">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
+            <a class="dropdown-item" href="#"><i class="fas fa-home"></i> 居家物業</a>
+            <a class="dropdown-item" href="#"><i class="fas fa-utensils"></i> 餐飲食品</a>
+            <a class="dropdown-item" href="#"><i class="fas fa-shuttle-van"></i> 運輸交通</a>
+            <a class="dropdown-item" href="#"><i class="fas fa-grin-beam"></i> 休閒娛樂</a>
+            <a class="dropdown-item" href="#"><i class="fas fa-pen"></i> 其他</a>
           </div>
         </li>
       </ul>
@@ -18,7 +18,7 @@
   </div>
   <div class="row mt-5 mb-5">
     <div class="col">
-      總金額:
+      <h2>總金額:</h2>
     </div>
   </div>
   <div class="row mt-5">
@@ -37,14 +37,14 @@
         </thead>
         <tbody>
           {{#each records}}
-          <tr class="table-danger">
-            <th scope="row">{{{this.category}}}</th>
+          <tr class="table-success" style="line-height: 45px;">
+            <th scope="row"><i class="fas fa-utensils"></i> {{{this.category}}}</th>
             <td>{{{this.name}}}</td>
             <td>{{this.amount}}</td>
-            <td><a href="/record/{{{this._id}}}/edit" class="btn btn-outline-info edit">修改</a></td>
+            <td><a href="/record/{{{this._id}}}/edit" class="btn btn-secondary edit">修改</a></td>
             <td>
               <form action="/record/{{{this._id}}}/delete" method="POST" style="display: inline;">
-                <button type="submit" class="btn btn-outline-danger btn-front">刪除</button>
+                <button type="submit" class="btn btn-danger btn-front">刪除</button>
               </form>
             </td>
           </tr>
