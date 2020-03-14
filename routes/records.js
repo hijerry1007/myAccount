@@ -35,7 +35,7 @@ router.get('/:id/edit', (req, res) => {
     })
 })
 // 修改post
-router.post('/:id/edit', (req, res) => {
+router.put('/:id', (req, res) => {
   Record.findById(req.params.id, (err, record) => {
     if (err) return console.error(err)
     record.name = req.body.name
@@ -49,7 +49,7 @@ router.post('/:id/edit', (req, res) => {
   })
 })
 // 刪除
-router.post('/:id/delete', (req, res) => {
+router.delete('/:id', (req, res) => {
   Record.findById(req.params.id, (err, record) => {
     if (err) return console.error(err)
     record.remove(err => {
