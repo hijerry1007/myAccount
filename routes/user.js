@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
-
 // 載入passport
 const passport = require('passport')
+
 const bcrypt = require('bcryptjs')
 const User = require('../models/user')
 
-// 登入
+// 登入頁
 router.get('/login', (req, res) => {
   res.render('login')
 })
@@ -33,7 +33,7 @@ router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
       successRedirect: '/',
       failureRedirect: '/users/login',
-      failureFlash: '帳號密碼輸入錯誤'
+      failureFlash: '帳號或密碼輸入錯誤'
     })(req, res, next)
   }
 })

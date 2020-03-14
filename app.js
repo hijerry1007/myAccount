@@ -9,7 +9,7 @@ const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const session = require('express-session')
-const handlebars = require("handlebars")
+const handlebar = require("handlebars")
 const flash = require('connect-flash')
 
 // 載入passport
@@ -36,27 +36,18 @@ db.once('open', () => {
 })
 
 app.use(session({
-  secret: 'save money',
+  secret: 'savemoney',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: true
 }))
-app.use(passport.initialize());
-app.use(passport.session());
 
-app.use(flash())
-app.use('/', require('./routes/home'))
-app.use('/record', require('./routes/records'))
-app.use('/users', require('./routes/user'))
-app.use('/auth', require('./routes/auths'))
+app.use(passport.initialize())
+app.use(passport.session())
 
-handlebars.registerHelper('if_equal', function (category, input, options) {
-  if (category === input) {
-    return options.fn(this);
-  }
-  return options.inverse(this);
-});
 // 載入passport config
 require('./config/passport')(passport)
+
+app.use(flash())
 app.use((req, res, next) => {
   res.locals.user = req.user
   res.locals.isAuthenticated = req.isAuthenticated()
@@ -65,6 +56,19 @@ app.use((req, res, next) => {
   res.locals.error_msg = req.flash('error')
   next()
 })
+
+
+app.use('/', require('./routes/home'))
+app.use('/record', require('./routes/records'))
+app.use('/users', require('./routes/user'))
+app.use('/auth', require('./routes/auths'))
+
+handlebar.registerHelper('if_equal', function (category, input, options) {
+  if (category === input) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
 
 
 
