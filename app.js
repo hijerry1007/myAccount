@@ -7,6 +7,9 @@ const handlebars = require("handlebars")
 const methodOverride = require('method-override')
 const session = require('express-session')
 
+// 載入passport
+const passport = require('passport')
+
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
@@ -32,9 +35,18 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use('/', require('./routes/home'))
 app.use('/record', require('./routes/records'))
 app.use('/users', require('./routes/user'))
+
+// 載入passport config
+require('./config/passport')(passport)
+app.use((req, res, next) => {
+  res.locals.user = req.user
+  next()
+})
 
 handlebars.registerHelper('if_equal', function (category, input, options) {
   if (category === input) {
