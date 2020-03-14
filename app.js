@@ -3,9 +3,10 @@ const app = express()
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
-const handlebars = require("handlebars")
 const methodOverride = require('method-override')
 const session = require('express-session')
+const handlebars = require("handlebars")
+
 
 // 載入passport
 const passport = require('passport')
@@ -43,6 +44,12 @@ app.use('/', require('./routes/home'))
 app.use('/record', require('./routes/records'))
 app.use('/users', require('./routes/user'))
 
+handlebars.registerHelper('if_equal', function (category, input, options) {
+  if (category === input) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
 // 載入passport config
 require('./config/passport')(passport)
 app.use((req, res, next) => {
@@ -51,12 +58,7 @@ app.use((req, res, next) => {
   next()
 })
 
-handlebars.registerHelper('if_equal', function (category, input, options) {
-  if (category === input) {
-    return options.fn(this);
-  }
-  return options.inverse(this);
-});
+
 
 app.listen(3000, () => {
   console.log('App is running')
