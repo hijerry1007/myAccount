@@ -38,10 +38,10 @@
         <tbody>
           {{#each records}}
           <tr class="table-danger">
-            <th scope="row">{{this.category}}</th>
-            <td>{{this.name}}</td>
+            <th scope="row">{{{this.category}}}</th>
+            <td>{{{this.name}}}</td>
             <td>{{this.amount}}</td>
-            <td><a href="#" class="btn btn-outline-info edit">修改</a></td>
+            <td><a href="/record/{{{this._id}}}/edit" class="btn btn-outline-info edit">修改</a></td>
             <td>
               <button type="submit" class="btn btn-outline-danger btn-front">刪除</button>
             </td>

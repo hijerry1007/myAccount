@@ -16,11 +16,10 @@ router.get('/new', (req, res) => {
 router.post('/', (req, res) => {
   const record = new Record({
     name: req.body.name,
-    date: req.body.time,
+    date: req.body.date,
     category: req.body.category,
     amount: req.body.amount
   })
-
   record.save(err => {
     if (err) return console.error(err)
     return res.redirect('/')
@@ -28,11 +27,26 @@ router.post('/', (req, res) => {
 })
 // 修改頁面
 router.get('/:id/edit', (req, res) => {
-  res.send('edit')
+  Record.findById(req.params.id)
+    .lean()
+    .exec((err, record) => {
+      if (err) return console.error(err)
+      return res.render('edit', { record: record })
+    })
 })
 // 修改post
-router.put('/:id', (req, res) => {
-  res.send('edit')
+router.post('/:id/edit', (req, res) => {
+  Record.findById(req.params.id, (err, record) => {
+    if (err) return console.error(err)
+    record.name = req.body.name
+    record.date = req.body.date
+    record.category = req.body.category
+    record.amount = req.body.amount
+    record.save(err => {
+      if (err) return console.error(err)
+      return res.redirect('/')
+    })
+  })
 })
 // 刪除
 router.put('/:id/delete', (req, res) => {
