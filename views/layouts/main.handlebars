@@ -35,9 +35,12 @@
         <ul class="navbar-nav mr-auto">
           {{!-- user detail link --}}
         </ul>
-        <form method="GET" action="/" class="form-inline my-2 my-lg-0">
-          <button class="btn btn-danger my-2 my-sm-0" type="submit">登出</button>
-        </form>
+
+        {{#if isAuthenticated}}
+        <a href="/users/logout" class="btn btn-danger my-2 my-sm-0">登出</a>
+        {{else}}
+        <a href="/users/login" class="btn btn-danger my-2 my-sm-0">登入</a>
+        {{/if}}
       </div>
     </nav>
 

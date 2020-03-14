@@ -13,6 +13,9 @@ const passport = require('passport')
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static('public'))
+app.use(methodOverride('_method'))
 
 mongoose.connect('mongodb://localhost/record', { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -27,16 +30,15 @@ db.once('open', () => {
   console.log('mongodb connected')
 })
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(express.static('public'))
-app.use(methodOverride('_method'))
 app.use(session({
   secret: 'save money',
   resave: false,
   saveUninitialized: true,
 }))
-app.use(passport.initialize())
-app.use(passport.session())
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.use('/', require('./routes/home'))
 app.use('/record', require('./routes/records'))
 app.use('/users', require('./routes/user'))
@@ -45,6 +47,7 @@ app.use('/users', require('./routes/user'))
 require('./config/passport')(passport)
 app.use((req, res, next) => {
   res.locals.user = req.user
+  res.locals.isAuthenticated = req.isAuthenticated()
   next()
 })
 

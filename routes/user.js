@@ -27,7 +27,6 @@ router.get('/register', (req, res) => {
 // 註冊檢查
 router.post('/register', (req, res) => {
   const { name, email, password, password2 } = req.body
-  console.log(email)
   User.findOne({ email: email }).then(user => {
     if (user) {
       res.render('register', { name, email, password, password2 })
