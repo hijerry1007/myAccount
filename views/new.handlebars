@@ -1,7 +1,64 @@
 <form action="/record" method="POST">
-  <input type="text" placeholder="name" name="name">
-  <input type="text" placeholder="datee" name="date">
-  <input type="text" placeholder="category" name="category">
-  <input type="text" placeholder="amount" name="amount">
-  <button type="submit">Create</button>
-</form>
+
+
+  {{!-- for datepicker --}}
+  <script type="text/javascript">
+    $(function () {
+      $('#datetimepicker1').datetimepicker();
+    });
+  </script>
+
+  <div class="container form-group">
+    <form action="/record" method="POST">
+      {{!-- name --}}
+      <div class="row">
+        <div class="col-1">
+          <label class="col-form-label col-form-label-lg" for="name">名稱*:
+          </label>
+        </div>
+        <div class="col-6">
+          <input class="form-control form-control-lg" type="text" placeholder="name" name="name"
+            value="{{{record.name}}}">
+        </div>
+      </div>
+      {{!-- date --}}
+      <div class="row">
+        <div class="col-1">
+          <label class="col-form-label col-form-label-lg" for="date">日期*:</label>
+        </div>
+        <div class="input-group date col-6" id="datetimepicker1">
+          <input class="form-control form-control-lg" type="date" placeholder="date" name="date">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+
+      </div>
+      {{!-- category --}}
+      <div class="row form-group">
+        <div class="col-1"><label class="col-form-label col-form-label-lg" for="category">類別*:</label></div>
+        <div class="col-6">
+          <select class="form-control form-control-lg" id="category" name="category">
+            <option value="" disabled selected>請選擇類別</option>
+            <option value="家居物業">家居物業</option>
+            <option value="餐飲食品">餐飲食品</option>
+            <option value="運輸交通">運輸交通</option>
+            <option value="休閒娛樂">休閒娛樂</option>
+            <option value="其他">其他</option>
+          </select>
+        </div>
+      </div>
+      {{!-- amount --}}
+      <div class="row">
+        <div class="col-1"><label class="col-form-label col-form-label-lg" for="amount">金額*:</label></div>
+        <div class="col-6">
+          <input class="form-control form-control-lg" type="text" placeholder="amount" name="amount"
+            value="{{{record.amount}}}">
+        </div>
+      </div>
+      {{!-- edit btn --}}
+      <div class="row form-group">
+        <button class="btn btn-secondary btn-lg" type="submit">新增項目</button>
+      </div>
+    </form>
+  </div>
