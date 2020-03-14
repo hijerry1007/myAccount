@@ -10,11 +10,21 @@ router.get('/', (req, res) => {
 })
 // 新增頁面
 router.get('/new', (req, res) => {
-  res.send('new')
+  res.render('new')
 })
 // 新增post
 router.post('/', (req, res) => {
-  res.send('new post')
+  const record = new Record({
+    name: req.body.name,
+    date: req.body.time,
+    category: req.body.category,
+    amount: req.body.amount
+  })
+
+  record.save(err => {
+    if (err) return console.error(err)
+    return res.redirect('/')
+  })
 })
 // 修改頁面
 router.get('/:id/edit', (req, res) => {
