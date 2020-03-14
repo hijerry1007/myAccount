@@ -1,4 +1,8 @@
 const express = require('express')
+// 判斷開發環境
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const app = express()
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
@@ -43,6 +47,7 @@ app.use(passport.session());
 app.use('/', require('./routes/home'))
 app.use('/record', require('./routes/records'))
 app.use('/users', require('./routes/user'))
+app.use('/auth', require('./routes/auths'))
 
 handlebars.registerHelper('if_equal', function (category, input, options) {
   if (category === input) {
