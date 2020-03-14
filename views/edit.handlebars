@@ -5,11 +5,21 @@
   });
 </script>
 
-<div class="container form-group">
+<div class="container form-group mt-5">
+  {{> messages}}
   <form action="/record/{{{record._id}}}?_method=PUT" method="POST">
+    {{!-- title --}}
+    <div class="row mb-5">
+      <div class="col-2">
+        <p>*為必填欄位</p>
+      </div>
+      <div class="col-6">
+        <h3>請修改支出項目</h3>
+      </div>
+    </div>
     {{!-- name --}}
-    <div class="row">
-      <div class="col-1">
+    <div class="row mb-5">
+      <div class="col-2">
         <label class="col-form-label col-form-label-lg" for="name">名稱*:
         </label>
       </div>
@@ -19,12 +29,13 @@
       </div>
     </div>
     {{!-- date --}}
-    <div class="row">
-      <div class="col-1">
+    <div class="row mb-5">
+      <div class="col-2">
         <label class="col-form-label col-form-label-lg" for="date">日期*:</label>
       </div>
       <div class="input-group date col-6" id="datetimepicker1">
-        <input class="form-control form-control-lg" type="date" placeholder="date" name="date">
+        <input class="form-control form-control-lg" type="date" placeholder="date" name="date"
+          value="{{{record.date}}}">
         <span class="input-group-addon">
           <span class="glyphicon glyphicon-calendar"></span>
         </span>
@@ -32,8 +43,8 @@
 
     </div>
     {{!-- category --}}
-    <div class="row form-group">
-      <div class="col-1"><label class="col-form-label col-form-label-lg" for="category">類別*:</label></div>
+    <div class="row form-group mb-5">
+      <div class="col-2"><label class="col-form-label col-form-label-lg" for="category">類別*:</label></div>
       <div class="col-6">
         <select class="form-control form-control-lg" id="category" name="category">
           <option value="" disabled selected>請選擇類別</option>
@@ -46,8 +57,8 @@
       </div>
     </div>
     {{!-- amount --}}
-    <div class="row">
-      <div class="col-1"><label class="col-form-label col-form-label-lg" for="amount">金額*:</label></div>
+    <div class="row mb-5">
+      <div class="col-2"><label class="col-form-label col-form-label-lg" for="amount">金額*:</label></div>
       <div class="col-6">
         <input class="form-control form-control-lg" type="text" placeholder="amount" name="amount"
           value="{{{record.amount}}}">

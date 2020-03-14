@@ -13,7 +13,12 @@ router.get('/', authenticated, (req, res) => {
     .lean()
     .exec((err, records) => {
       if (err) return console.error(err)
-      return res.render('index', { records: records })
+      let totalAmount = 0
+      for (let i = 0; i < records.length; i++) {
+        console.log(records[i].amount)
+        totalAmount += records[i].amount
+      }
+      return res.render('index', { records: records, totalAmount: totalAmount })
     })
 })
 

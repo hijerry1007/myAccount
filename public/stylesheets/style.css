@@ -5,6 +5,10 @@
   width: 1000px;
 }
 
+.row {
+  justify-content: center;
+}
+
 ul.nav.nav-pills{
   justify-content: center;
 }
