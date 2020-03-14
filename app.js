@@ -3,6 +3,8 @@ const app = express()
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
+const handlebars = require("handlebars")
+
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
@@ -24,6 +26,12 @@ app.use('/', require('./routes/home'))
 app.use('/record', require('./routes/records'))
 
 
+handlebars.registerHelper('if_equal', function (category, input, options) {
+  if (category === input) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
 
 app.listen(3000, () => {
   console.log('App is running')
