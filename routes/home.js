@@ -16,6 +16,7 @@ router.get('/', authenticated, (req, res) => {
     .lean()
     .exec((err, records) => {
       if (err) return console.error(err)
+
       let totalAmount = 0
       for (let i = 0; i < records.length; i++) {
         totalAmount += records[i].amount

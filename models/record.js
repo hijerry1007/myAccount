@@ -7,10 +7,14 @@ const recordSchema = new Schema({
     required: true
   },
   date: {
-    type: Schema.Types.Date,
+    type: String,
     required: true
   },
   category: {
+    type: String,
+    required: true
+  },
+  shop: {
     type: String,
     required: true
   },

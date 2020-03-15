@@ -23,6 +23,7 @@ router.post('/', authenticated, (req, res) => {
     date: req.body.date,
     category: req.body.category,
     amount: req.body.amount,
+    shop: req.body.shop,
     userId: req.user._id
   })
   record.save(err => {
@@ -63,6 +64,7 @@ router.put('/:id', authenticated, (req, res) => {
       record.date = req.body.date
       record.category = req.body.category
       record.amount = req.body.amount
+      record.shop = req.body.shop
       record.save(err => {
         if (err) return console.error(err)
         return res.redirect('/')

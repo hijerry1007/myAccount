@@ -46,7 +46,9 @@
           <tr>
             <th scope="col">類別</th>
             <th scope="col">名稱</th>
+            <th scope="col">商家</th>
             <th scope="col">金額</th>
+            <th scope="col">時間</th>
             <th scope="col" class="th_blank"></th>
             <th scope="col" class="th_blank"><a class="btn btn-outline-primary btn-lg" href="/record/new">新增</a>
             </th>
@@ -67,8 +69,11 @@
               {{#if_equal category '其他'}}<i class="fas fa-pen"></i>
               {{/if_equal}}
               {{{this.category}}}</th>
-            <td>{{{this.name}}}</td>
-            <td>{{this.amount}}</td>
+            <td>{{{this.name}}}
+            <td>{{{this.shop}}}</td>
+            </td>
+            <td>{{{this.amount}}}</td>
+            <td>{{this.date}}</td>
             <td><a href="/record/{{{this._id}}}/edit" class="btn btn-secondary edit">修改</a></td>
             <td>
               <form action="/record/{{{this._id}}}?_method=DELETE" method="POST" style="display: inline;">
