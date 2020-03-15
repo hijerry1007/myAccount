@@ -6,11 +6,11 @@
 
 ### 登入首頁
 
-![image](https://github.com/hijerry1007/restaurantList_v2/blob/master/photo/homepage.png)
+![image](https://github.com/hijerry1007/myAccount/blob/master/photos/login.png)
 
 ### 首頁
 
-![image](https://github.com/hijerry1007/restaurantList_v2/blob/master/photo/addpage.png)
+![image](https://github.com/hijerry1007/myAccount/blob/master/photos/homepage.png)
 
 
 ## 安裝
