@@ -7,7 +7,7 @@ const recordSchema = new Schema({
     required: true
   },
   date: {
-    type: String,
+    type: Schema.Types.Date,
     required: true
   },
   category: {

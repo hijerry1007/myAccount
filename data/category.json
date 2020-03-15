@@ -1,7 +1,7 @@
 {
   "category": {
-    "居家物業": {
-      "category_name": "居家物業",
+    "家居物業": {
+      "category_name": "家居物業",
       "icon": "fas fa-home",
       "subtotal": "0"
     },

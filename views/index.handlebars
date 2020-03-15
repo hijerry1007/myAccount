@@ -1,8 +1,25 @@
-<div class="container mt-3">
+<div class="container mt-3 form-group">
   <form action="/filter" method="POST">
     <div class="row">
-      <div class="col-12">
-        <select name="selectedCategory" class="">
+      {{> messages}}
+      <div class="col-2">
+        <select name="selectedYear" class="form-control">
+          <option value="all">全部年份</option>
+          {{#each year}}
+          <option value="{{this.year}}" {{isSelected ../selectedYear this.year}}>{{this.year}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="col-3">
+        <select name="selectedMonth" class="form-control">
+          <option value="all">全部月份</option>
+          {{#each month}}
+          <option value="{{this.value}}" {{isSelected ../selectedMonth this.value}}>{{this.month_ch}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="col-3">
+        <select name="selectedCategory" class="form-control">
           <option value="all">全部類別</option>
           {{#each category}}
           <option value="{{this.category_name}}" {{isSelected ../selectedCategory this.category_name}}>
@@ -10,6 +27,8 @@
           </option>
           {{/each}}
         </select>
+      </div>
+      <div class="col-1">
         <button class="btn btn-primary">篩選</button>
       </div>
     </div>
