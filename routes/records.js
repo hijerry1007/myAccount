@@ -11,6 +11,7 @@ const { authenticated } = require('../config/auth')
 router.get('/', authenticated, (req, res) => {
   res.redirect('/')
 })
+
 // 新增頁面
 router.get('/new', authenticated, (req, res) => {
   res.render('new')

@@ -1,21 +1,19 @@
 <div class="container mt-3">
-  <div class="row">
-    <div class="col-12">
-      <ul class="nav nav-pills ">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-            aria-expanded="false">依分類搜尋</a>
-          <div class="dropdown-menu" style="">
-            <a class="dropdown-item" href="#"><i class="fas fa-home"></i> 居家物業</a>
-            <a class="dropdown-item" href="#"><i class="fas fa-utensils"></i> 餐飲食品</a>
-            <a class="dropdown-item" href="#"><i class="fas fa-shuttle-van"></i> 運輸交通</a>
-            <a class="dropdown-item" href="#"><i class="fas fa-grin-beam"></i> 休閒娛樂</a>
-            <a class="dropdown-item" href="#"><i class="fas fa-pen"></i> 其他</a>
-          </div>
-        </li>
-      </ul>
+  <form action="/filter" method="POST">
+    <div class="row">
+      <div class="col-12">
+        <select name="selectedCategory" class="">
+          <option value="all">全部類別</option>
+          {{#each category}}
+          <option value="{{this.category_name}}" {{isSelected ../selectedCategory this.category_name}}>
+            {{this.category_name}}
+          </option>
+          {{/each}}
+        </select>
+        <button class="btn btn-primary">篩選</button>
+      </div>
     </div>
-  </div>
+  </form>
   <div class="row mt-5 mb-5">
     <div class="col">
       <h2>總金額: {{{totalAmount}}}</h2>

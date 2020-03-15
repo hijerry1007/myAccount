@@ -10,6 +10,7 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const session = require('express-session')
 const handlebar = require("handlebars")
+const handlebarHelpers = require('handlebars-helpers')
 const flash = require('connect-flash')
 
 // 載入passport
@@ -70,7 +71,9 @@ handlebar.registerHelper('if_equal', function (category, input, options) {
   return options.inverse(this);
 });
 
-
+handlebar.registerHelper('isSelected', function (selected, current, options) {
+  return selected === current ? 'selected' : ''
+})
 
 app.listen(3000, () => {
   console.log('App is running')
