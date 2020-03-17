@@ -12,21 +12,19 @@ const { authenticated } = require('../config/auth')
 
 // home page
 router.get('/', authenticated, (req, res) => {
-  console.log(req.query)
+  // console.log(req.query)
   let { dateBeg, dateEnd, selectedCategory } = req.query
   let errors = []
   const filter_category = (selectedCategory === 'all') ? {} : { category: selectedCategory }
-  const filterTime = {
-    date: {
-      $gte: dateBeg, $lte: dateEnd
+  const filterTime = (dateBeg === 'all' && dateEnd === 'all') ? {} :
+    {
+      date: { $gte: dateBeg, $lte: dateEnd }
     }
-  }
-  //有時間有類別
-  if (dateBeg !== '' && dateEnd !== '' && selectedCategory !== '') {
 
-    Record.find({ userId: req.user._id })
-      .find({ filter_category })
-      .find({ filterTime })
+  //首頁
+  if (!dateBeg && !dateEnd && !selectedCategory) {
+    Record
+      .find({ userId: req.user._id })
       .lean()
       .exec((err, records) => {
         if (err) return console.error(err)
@@ -34,13 +32,14 @@ router.get('/', authenticated, (req, res) => {
         for (let i = 0; i < records.length; i++) {
           totalAmount += records[i].amount
         }
-        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year, errors })
+        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year })
       })
+
   }
   else if (dateBeg === '' && dateEnd === '' && selectedCategory !== '') {
     //有類別沒時間
     Record.find({ userId: req.user._id })
-      .find({ filter_category })
+      .find(filter_category)
       .lean()
       .exec((err, records) => {
         if (err) return console.error(err)
@@ -56,7 +55,6 @@ router.get('/', authenticated, (req, res) => {
     errors.push({ message: '請選擇要搜尋的起始及結束的時間' })
     Record
       .find({ userId: req.user._id })
-      .find({ filter_category })
       .lean()
       .exec((err, records) => {
         if (err) return console.error(err)
@@ -67,49 +65,8 @@ router.get('/', authenticated, (req, res) => {
         return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year, errors })
       })
   }
-  else {
-
-    Record
-      .find({ userId: req.user._id })
-      .lean()
-      .exec((err, records) => {
-        if (err) return console.error(err)
-        let totalAmount = 0
-        for (let i = 0; i < records.length; i++) {
-          totalAmount += records[i].amount
-        }
-        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year })
-      })
-  }
-})
-
-//filter
-router.post('/filter', authenticated, (req, res) => {
-  console.log(req.query)
-  let { selectedYear, selectedMonth, selectedCategory } = req.body
-  let errors = []
-  if (selectedYear === 'all' && selectedMonth !== "all") {
-    errors.push({ message: '請輸入年份' })
+  else if (dateBeg !== '' && dateEnd !== '') {
     Record.find({ userId: req.user._id })
-      .lean()
-      .exec((err, records) => {
-        if (err) return console.error(err)
-        let totalAmount = 0
-        for (let i = 0; i < records.length; i++) {
-          totalAmount += records[i].amount
-        }
-        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year, errors })
-      })
-  }
-  else if (selectedYear !== 'all' && selectedMonth !== "all") {
-    const filterTime = {
-      date: {
-        $gte: `${selectedYear}-${+selectedMonth}-01`, $lte: `${selectedYear}-${+selectedMonth}-31`
-      }
-    }
-    const filter_category = (selectedCategory === 'all') ? {} : { category: selectedCategory }
-    Record
-      .find({ userId: req.user._id })
       .find(filter_category)
       .find(filterTime)
       .lean()
@@ -119,47 +76,12 @@ router.post('/filter', authenticated, (req, res) => {
         for (let i = 0; i < records.length; i++) {
           totalAmount += records[i].amount
         }
-        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year })
+        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year, errors })
       })
-  }
-  else if (selectedYear !== 'all' && selectedMonth === "all") {
-    const filterYear = {
-      date: {
-        $gte: `${selectedYear}-01-01`, $lte: `${selectedYear}-12-31`
-      }
-    }
-    const filter_category = (selectedCategory === 'all') ? {} : { category: selectedCategory }
-    Record
-      .find({ userId: req.user._id })
-      .find(filter_category)
-      .find(filterYear)
-      .lean()
-      .exec((err, records) => {
-        if (err) return console.error(err)
-        let totalAmount = 0
-        for (let i = 0; i < records.length; i++) {
-          totalAmount += records[i].amount
-        }
-        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year })
-      })
-  }
-  else if (selectedYear === 'all' && selectedMonth === "all") {
-    const filter_category = (selectedCategory === 'all') ? {} : { category: selectedCategory }
-    Record
-      .find({ userId: req.user._id })
-      .find(filter_category)
-      .lean()
-      .exec((err, records) => {
-        if (err) return console.error(err)
-        let totalAmount = 0
-        for (let i = 0; i < records.length; i++) {
-          totalAmount += records[i].amount
-        }
-        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year })
-      })
-  }
 
+  }
 
 })
+
 
 module.exports = router
