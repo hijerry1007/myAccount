@@ -27,6 +27,9 @@ const recordSchema = new Schema({
     ref: 'User',
     index: true,
     require: true,
+  },
+  categoryAmount: {
+    type: Array
   }
 })
 

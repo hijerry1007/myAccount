@@ -28,3 +28,8 @@ ul.nav.nav-pills{
   display: flex;
   justify-content: center;
 }
+
+#flotcontainer {
+width: 250px;
+height: 250px;
+}
