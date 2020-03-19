@@ -12,7 +12,13 @@ const { authenticated } = require('../config/auth')
 
 // home page
 router.get('/', authenticated, (req, res) => {
-  // console.log(req.query)
+  // 分頁
+  let pageSize = 3
+  let currentPage = 1
+  let pageNumber = req.query.page || 1
+  let offset = (pageNumber - currentPage) * pageSize
+
+
   let { dateBeg, dateEnd, selectedCategory } = req.query
   let errors = []
   const filter_category = (selectedCategory === 'all') ? {} : { category: selectedCategory }
@@ -21,18 +27,28 @@ router.get('/', authenticated, (req, res) => {
       date: { $gte: dateBeg, $lte: dateEnd }
     }
 
+
   //首頁
   if (!dateBeg && !dateEnd && !selectedCategory) {
     Record
       .find({ userId: req.user._id })
+      .sort({ _id: 1 })
       .lean()
       .exec((err, records) => {
         if (err) return console.error(err)
+
+        let totalPages = Math.ceil(records.length / pageSize) || 1
+        const pages = []
+        for (let i = 1; i < totalPages + 1; i++) {
+          pages.push({ page: i })
+        }
+        let pageData = records.slice(offset, offset + pageSize)
+        console.log(pageData)
         let totalAmount = 0
         for (let i = 0; i < records.length; i++) {
           totalAmount += records[i].amount
         }
-        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year })
+        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year, pages, pageData, pageNumber })
       })
 
   }
