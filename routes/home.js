@@ -110,8 +110,8 @@ router.get('/search', authenticated, (req, res) => {
   const keyword = req.query.keyword
   const regexp = new RegExp(keyword, "i")
   Record.find({ userId: req.user._id })
-    .find({ name: { $regex: regexp } })
-    .sort({ name: 'asc' })
+    .find({ shop: { $regex: regexp } })
+    .sort({ shop: 'asc' })
     .lean()
     .exec((err, records) => {
       if (err) return console.error(err)
