@@ -60,7 +60,9 @@ router.get('/', authenticated, (req, res) => {
         for (let i = 0; i < records.length; i++) {
           totalAmount += records[i].amount
         }
-        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year, errors })
+        let pageData = records.slice(offset, offset + pageSize)
+
+        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year, errors, pageData })
       })
   }
   else if ((dateBeg === '' && dateEnd !== '') || (dateBeg !== '' && dateEnd === '')) {
@@ -75,7 +77,9 @@ router.get('/', authenticated, (req, res) => {
         for (let i = 0; i < records.length; i++) {
           totalAmount += records[i].amount
         }
-        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year, errors })
+        let pageData = records.slice(offset, offset + pageSize)
+
+        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year, errors, pageData })
       })
   }
   else if (dateBeg !== '' && dateEnd !== '') {
@@ -89,12 +93,36 @@ router.get('/', authenticated, (req, res) => {
         for (let i = 0; i < records.length; i++) {
           totalAmount += records[i].amount
         }
-        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year, errors })
+        let pageData = records.slice(offset, offset + pageSize)
+
+        return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year, errors, pageData })
       })
 
   }
 
 })
 
+router.get('/search', authenticated, (req, res) => {
+  let pageSize = 3
+  let currentPage = 1
+  let pageNumber = req.query.page || 1
+  let offset = (pageNumber - currentPage) * pageSize
+  const keyword = req.query.keyword
+  const regexp = new RegExp(keyword, "i")
+  Record.find({ userId: req.user._id })
+    .find({ name: { $regex: regexp } })
+    .sort({ name: 'asc' })
+    .lean()
+    .exec((err, records) => {
+      if (err) return console.error(err)
+      let totalAmount = 0
+      for (let i = 0; i < records.length; i++) {
+        totalAmount += records[i].amount
+      }
+      let pageData = records.slice(offset, offset + pageSize)
+
+      return res.render('index', { records: records, totalAmount: totalAmount, category: category, month: month, year: year, pageData })
+    })
+})
 
 module.exports = router
