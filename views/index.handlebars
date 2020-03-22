@@ -94,17 +94,13 @@
 <div class="row">
   <div class="col" id="pagination">
     <ul class="pagination">
-      <li class="page-item {{#if_equal pageNumber '1'}}disabled{{/if_equal}}">
-        <a class="page-link" href="/?page={{pageNumber-1}}">&laquo;</a>
-      </li>
+
       {{#each pages}}
       <li class="page-item">
         <a class="page-link" href="/?page={{this.page}}">{{this.page}}</a>
       </li>
       {{/each}}
-      <li class="page-item">
-        <a class="page-link" href="#">&raquo;</a>
-      </li>
+
     </ul>
   </div>
 </div>

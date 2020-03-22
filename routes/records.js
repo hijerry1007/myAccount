@@ -4,6 +4,8 @@ const router = express.Router()
 
 // model
 const Record = require('../models/record')
+const category = require('../data/category.json').category
+
 
 // 驗證
 const { authenticated } = require('../config/auth')
@@ -15,27 +17,133 @@ router.get('/', authenticated, (req, res) => {
 
 // 圖表頁面
 router.get('/chart', authenticated, (req, res) => {
-  Record.find({ userId: req.user._id })
-    .lean()
-    .exec((err, records) => {
-      if (err) return console.error(err)
 
-      let homeAmount = 0
-      let foodAmount = 0
-      let transportAmount = 0
-      let entertainmentAmount = 0
-      let otherAmount = 0
-      records.forEach(record => {
-        homeAmount += record.categoryAmount[0]
-        foodAmount += record.categoryAmount[1]
-        transportAmount += record.categoryAmount[2]
-        entertainmentAmount += record.categoryAmount[3]
-        otherAmount += record.categoryAmount[4]
+  let { dateBeg, dateEnd, selectedCategory } = req.query
+  let errors = []
+  const filter_category = (selectedCategory === 'all') ? {} : { category: selectedCategory }
+  const filterTime = (dateBeg === 'all' && dateEnd === 'all') ? {} :
+    {
+      date: { $gte: dateBeg, $lte: dateEnd }
+    }
+
+  if (!dateBeg && !dateEnd && !selectedCategory) {
+    errors.push({ message: '您可以輸入要篩選的時間與類別' })
+    Record
+      .find({ userId: req.user._id })
+      .lean()
+      .exec((err, records) => {
+        let homeAmount = 0
+        let foodAmount = 0
+        let transportAmount = 0
+        let entertainmentAmount = 0
+        let otherAmount = 0
+        records.forEach(record => {
+          homeAmount += record.categoryAmount[0]
+          foodAmount += record.categoryAmount[1]
+          transportAmount += record.categoryAmount[2]
+          entertainmentAmount += record.categoryAmount[3]
+          otherAmount += record.categoryAmount[4]
+        })
+
+        let totalAmount = homeAmount + foodAmount + transportAmount + entertainmentAmount + otherAmount
+        return res.render('chart', { records, totalAmount, homeAmount, foodAmount, transportAmount, entertainmentAmount, otherAmount, category: category, errors })
+      })
+  }
+  else if (dateBeg === '' && dateEnd === '' && selectedCategory !== '') {
+    //有類別沒時間
+    Record.find({ userId: req.user._id })
+      .find(filter_category)
+      .lean()
+      .exec((err, records) => {
+        if (err) return console.error(err)
+        let homeAmount = 0
+        let foodAmount = 0
+        let transportAmount = 0
+        let entertainmentAmount = 0
+        let otherAmount = 0
+        records.forEach(record => {
+          homeAmount += record.categoryAmount[0]
+          foodAmount += record.categoryAmount[1]
+          transportAmount += record.categoryAmount[2]
+          entertainmentAmount += record.categoryAmount[3]
+          otherAmount += record.categoryAmount[4]
+        })
+
+        let totalAmount = homeAmount + foodAmount + transportAmount + entertainmentAmount + otherAmount
+        return res.render('chart', { records, totalAmount, homeAmount, foodAmount, transportAmount, entertainmentAmount, otherAmount, category: category })
+      })
+  }
+  else if ((dateBeg === '' && dateEnd !== '') || (dateBeg !== '' && dateEnd === '')) {
+    //錯誤情形
+    errors.push({ message: '請選擇要搜尋的起始及結束的時間' })
+    Record
+      .find({ userId: req.user._id })
+      .lean()
+      .exec((err, records) => {
+        if (err) return console.error(err)
+        let homeAmount = 0
+        let foodAmount = 0
+        let transportAmount = 0
+        let entertainmentAmount = 0
+        let otherAmount = 0
+        records.forEach(record => {
+          homeAmount += record.categoryAmount[0]
+          foodAmount += record.categoryAmount[1]
+          transportAmount += record.categoryAmount[2]
+          entertainmentAmount += record.categoryAmount[3]
+          otherAmount += record.categoryAmount[4]
+        })
+
+        let totalAmount = homeAmount + foodAmount + transportAmount + entertainmentAmount + otherAmount
+        return res.render('chart', { records, totalAmount, homeAmount, foodAmount, transportAmount, entertainmentAmount, otherAmount, category: category })
+      })
+  }
+  else if (dateBeg !== '' && dateEnd !== '') {
+    Record.find({ userId: req.user._id })
+      .find(filter_category)
+      .find(filterTime)
+      .lean()
+      .exec((err, records) => {
+        if (err) return console.error(err)
+        let homeAmount = 0
+        let foodAmount = 0
+        let transportAmount = 0
+        let entertainmentAmount = 0
+        let otherAmount = 0
+        records.forEach(record => {
+          homeAmount += record.categoryAmount[0]
+          foodAmount += record.categoryAmount[1]
+          transportAmount += record.categoryAmount[2]
+          entertainmentAmount += record.categoryAmount[3]
+          otherAmount += record.categoryAmount[4]
+        })
+
+        let totalAmount = homeAmount + foodAmount + transportAmount + entertainmentAmount + otherAmount
+        return res.render('chart', { records, totalAmount, homeAmount, foodAmount, transportAmount, entertainmentAmount, otherAmount, category: category })
       })
 
-      let totalAmount = homeAmount + foodAmount + transportAmount + entertainmentAmount + otherAmount
-      return res.render('chart', { records, totalAmount, homeAmount, foodAmount, transportAmount, entertainmentAmount, otherAmount })
-    })
+  }
+  // Record.find({ userId: req.user._id })
+  //   .lean()
+  //   .exec((err, records) => {
+  //     if (err) return console.error(err)
+
+  //     let homeAmount = 0
+  //     let foodAmount = 0
+  //     let transportAmount = 0
+  //     let entertainmentAmount = 0
+  //     let otherAmount = 0
+  //     records.forEach(record => {
+  //       homeAmount += record.categoryAmount[0]
+  //       foodAmount += record.categoryAmount[1]
+  //       transportAmount += record.categoryAmount[2]
+  //       entertainmentAmount += record.categoryAmount[3]
+  //       otherAmount += record.categoryAmount[4]
+  //     })
+
+  //     let totalAmount = homeAmount + foodAmount + transportAmount + entertainmentAmount + otherAmount
+  //     return res.render('chart', { records, totalAmount, homeAmount, foodAmount, transportAmount, entertainmentAmount, otherAmount, category: category })
+  //   })
 
 
 })

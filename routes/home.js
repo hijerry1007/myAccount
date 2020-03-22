@@ -18,7 +18,6 @@ router.get('/', authenticated, (req, res) => {
   let pageNumber = req.query.page || 1
   let offset = (pageNumber - currentPage) * pageSize
 
-
   let { dateBeg, dateEnd, selectedCategory } = req.query
   let errors = []
   const filter_category = (selectedCategory === 'all') ? {} : { category: selectedCategory }
@@ -36,14 +35,12 @@ router.get('/', authenticated, (req, res) => {
       .lean()
       .exec((err, records) => {
         if (err) return console.error(err)
-
         let totalPages = Math.ceil(records.length / pageSize) || 1
         const pages = []
         for (let i = 1; i < totalPages + 1; i++) {
           pages.push({ page: i })
         }
         let pageData = records.slice(offset, offset + pageSize)
-        console.log(pageData)
         let totalAmount = 0
         for (let i = 0; i < records.length; i++) {
           totalAmount += records[i].amount
